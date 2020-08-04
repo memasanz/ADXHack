@@ -1,7 +1,7 @@
 ADXHack
 =======
 
-**Pre-Reqs:**
+## Pre-Reqs:
 
 -   Visual Studio Hack
 
@@ -17,24 +17,26 @@ ADXHack
 
     -   <https://dataexplorer.azure.com/>
 
-Environment Setup – Azure Data Explorer
+## Environment Setup – Azure Data Explorer
 ---------------------------------------
 
 1.  Create ADX Instance
 
 <https://docs.microsoft.com/en-us/azure/data-explorer/create-cluster-database-portal>
 
-| [./media/image1.png](./media/image1.png) |
-|------------------------------------------|
 
+
+| [](media/22af5207dd7d18364d2072e08f0c3e08.png) |
+|------------------------------------------|
 
 Figure 1.1
 
-![](media/f2d35f27724316d58dccf6359af97268.png)
+|![](media/f2d35f27724316d58dccf6359af97268.png)|
+|------------------------------------------|
 
 Figure 1.2
 
-| [./media/image3.png](./media/image3.png) |
+| [](/media/6ee9566eaa3e142e4784c94c1ae60d26.png) |
 |------------------------------------------|
 
 
