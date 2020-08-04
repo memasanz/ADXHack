@@ -34,7 +34,9 @@ Figure 1.1
 
 Figure 1.2
 
-![](media/6ee9566eaa3e142e4784c94c1ae60d26.png)
+| [./media/image3.png](./media/image3.png) |
+|------------------------------------------|
+
 
 Figure 1.3
 
