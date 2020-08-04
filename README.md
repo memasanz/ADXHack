@@ -3,12 +3,19 @@ ADXHack
 
 **Pre-Reqs:**
 
-\-Visual Studio Hack
+-   Visual Studio Hack
 
-\-CSV Files for manual ingestion
+-   Microsoft Edge
 
-\-Review Cost Estimator
-<https://dataexplorer.azure.com/AzureDataExplorerCostEstimator.html>
+-   CSV Files for manual ingestion
+
+-   Review Cost Estimator
+
+    -   <https://dataexplorer.azure.com/AzureDataExplorerCostEstimator.html>
+
+-   Able to Access:
+
+    -   <https://dataexplorer.azure.com/>
 
 Environment Setup – Azure Data Explorer
 ---------------------------------------
@@ -17,7 +24,9 @@ Environment Setup – Azure Data Explorer
 
 <https://docs.microsoft.com/en-us/azure/data-explorer/create-cluster-database-portal>
 
-![](media/22af5207dd7d18364d2072e08f0c3e08.png)
+| [./media/image1.png](./media/image1.png) |
+|------------------------------------------|
+
 
 Figure 1.1
 
