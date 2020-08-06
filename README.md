@@ -176,8 +176,20 @@ TransactionEvents
 ### 13.  Install Kusto.Explorer
 <https://docs.microsoft.com/en-us/azure/data-explorer/kusto/tools/kusto-explorer>
 
-Kusto Explorer will actually pick up anomolies without us doing anything, 
+Kusto Explorer will actually pick up anomolies without us doing anything
+
+```SQL
+let min_t = toscalar(TransactionEvents | summarize min(processed));
+let max_t = toscalar(TransactionEvents | summarize max(processed));
+let dt = 2h;
+TransactionEvents
+| make-series num=count() default=0 on processed in range(min_t, max_t, dt) by serverClusterMainNode
+| render anomalychart with ( title='Transactions anomalies') 
+```
+
 |![](media/KustoExplorer01.PNG)|
+
+**But let's take a step back and start going through some queries and syntax**
 
 ### 14.  In Kusto.Explorer or Edge - lets start looking at some data
 
