@@ -167,19 +167,19 @@ TransactionEvents
 | count
 ```
 
-| Edit Mapping Import |   |   |
-|---------------------|---|---|
+### 12. Edit Mapping Import
+
 
 |![](media/139985c179036fa81ced07378ae20d40.png) |
 |------------------------------------------------------------------------------------------|
 
-### 12.  Install Kusto.Explorer
+### 13.  Install Kusto.Explorer
 <https://docs.microsoft.com/en-us/azure/data-explorer/kusto/tools/kusto-explorer>
 
 Kusto Explorer will actually pick up anomolies without us doing anything, 
-|![](media/KustoExplorer01.png)
+|![](media/KustoExplorer01.png)|
 
-###13.  In Kusto.Explorer or Edge
+### 14.  In Kusto.Explorer or Edge - lets start looking at some data
 
 ```SQL
 TransactionEvents
