@@ -177,7 +177,7 @@ TransactionEvents
 <https://docs.microsoft.com/en-us/azure/data-explorer/kusto/tools/kusto-explorer>
 
 Kusto Explorer will actually pick up anomolies without us doing anything, 
-|![](media/KustoExplorer01.png)|
+|![](media/KustoExplorer01.PNG)|
 
 ### 14.  In Kusto.Explorer or Edge - lets start looking at some data
 
