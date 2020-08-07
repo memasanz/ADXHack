@@ -411,7 +411,7 @@ with (title='traffic, decomposition', ysplit=panels)
 
 ### Extra Credit - Cluster Diagnostics
 
-| ![](media/ClusterDiagnostics01.PNG)|
+|![](media/ClusterDiagnostics01.png) |
 ```SQL
 
 // Cluster Diagnostics
