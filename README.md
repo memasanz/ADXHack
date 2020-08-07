@@ -463,6 +463,42 @@ We can create a dashboard that can be shared with your team.
 
 <https://docs.microsoft.com/en-us/azure/data-explorer/power-bi-connector>
 
+The link above shows how to create a connection - be sure to use a direct connection (Azure Data Explorer runs query)
+
+| ![](media/PowerBI.PNG) |
+|---------------------------------------|
+
+We can setup a connection to power bi with a specific query
+
+| ![](media/PowerBI00.PNG) |
+|---------------------------------------|
+
+```SQL
+TransactionEvents
+|summarize by direction, serverClusterMainNode, errorResolutionType
+```
+
+The steps below walk us through setting up the connection using a query established in Kusto Explorer
+
+
+
+| ![](media/PowerBI01.PNG) |
+|---------------------------------------|
+
+| ![](media/PowerBI02.PNG) |
+|---------------------------------------|
+
+| ![](media/PowerBI03.PNG) |
+|---------------------------------------|
+
+| ![](media/PowerBI04.PNG) |
+|---------------------------------------|
+
+| ![](media/PowerBI05.PNG) |
+|---------------------------------------|
+
+| ![](media/PowerBI06.PNG) |
+|---------------------------------------|
 
 
 
