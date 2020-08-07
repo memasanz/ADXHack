@@ -425,26 +425,37 @@ with (title='traffic, decomposition', ysplit=panels)
 ### Dashboard
 We can create a dashboard that can be shared with your team.
 | ![](media/Dashboard01.PNG) |
+|---------------------------------------|
 
 | ![](media/Dashboard02.PNG) |
+|---------------------------------------|
 
 | ![](media/Dashboard03.PNG) |
+|---------------------------------------|
 
 | ![](media/Dashboard04.PNG) |
+|---------------------------------------|
 
 | ![](media/Dashboard05.PNG) |
+|---------------------------------------|
 
 | ![](media/Dashboard06.PNG) |
+|---------------------------------------|
 
 | ![](media/Dashboard07.PNG) |
+|---------------------------------------|
 
 | ![](media/Dashboard08.PNG) |
+|---------------------------------------|
 
 | ![](media/Dashboard09.PNG) |
+|---------------------------------------|
 
 | ![](media/Dashboard10.PNG) |
+|---------------------------------------|
 
 | ![](media/Dashboard11.PNG) |
+|---------------------------------------|
 
 
 
