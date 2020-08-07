@@ -268,6 +268,17 @@ by direction
 ```
 
 ```SQL
+let min_t = datetime(2020-06-19 00:00:00);
+let max_t = datetime(2020-06-19 02:00:00);
+let dt = 1m;
+TransactionEvents
+| make-series num=count() default=0 on processed from min_t to max_t step dt by direction
+| extend (baseline, seasonal, trend, residual) = series_decompose(num, -1, 'linefit')
+| render timechart 
+with (title='traffic, decomposition', ysplit=panels)
+```
+
+```SQL
  //series_fir - will be used later.
  //fir = finite impulse response, moving averages, calc change detection
 let min_t = toscalar(TransactionEvents | summarize min(processed));
@@ -376,6 +387,8 @@ TransactionEvents
 with (anomalycolumns=anomalies, title='Transactions, anomalies')
 ```
 
+
+
 ```SQL
 let min_t = toscalar(TransactionEvents | summarize min(processed));
 let max_t = toscalar(TransactionEvents | summarize max(processed));
@@ -408,6 +421,58 @@ TransactionEvents
 | render timechart 
 with (title='traffic, decomposition', ysplit=panels)
 ```
+
+### Dashboard
+We can create a dashboard that can be shared with your team.
+|![](media/Dashboard01.PNG)|
+
+|![](media/Dashboard02.PNG)|
+
+|![](media/Dashboard03.PNG)|
+
+|![](media/Dashboard04.PNG)|
+
+|![](media/Dashboard05.PNG)|
+
+|![](media/Dashboard06.PNG)|
+
+|![](media/Dashboard07.PNG)|
+
+|![](media/Dashboard08.PNG)|
+
+|![](media/Dashboard09.PNG)|
+
+|![](media/Dashboard10.PNG)|
+
+|![](media/Dashboard11.PNG)|
+
+
+
+### Power BI Dashboard
+
+<https://docs.microsoft.com/en-us/azure/data-explorer/power-bi-connector>
+
+
+
+
+### Things of interesting
+
+- Why did the traffic go down to 0 for these servers?  
+
+```SQL
+
+//Time Series Analysis - getting the biggest decline for a server.  Why is the service count gone down to 0?
+let min_t = toscalar(TransactionEvents | summarize min(processed));
+let max_t = toscalar(TransactionEvents | summarize max(processed));
+TransactionEvents
+| make-series transCount = count() on processed from min_t to max_t step 1h by direction, serverClusterMainNode, errorResolutionType
+| extend series_fit_line(transCount)
+| extend series_fit_2lines(transCount)
+| top 2 by series_fit_2lines_transCount_left_slope asc
+| project direction, serverClusterMainNode, errorResolutionType, processed, transCount
+| render timechart with(title="Service Traffic for 2 instances")
+```
+|![](media/TimeSeriesAnalysis01.PNG) |
 
 ### Extra Credit - Cluster Diagnostics
 
