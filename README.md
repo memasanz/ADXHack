@@ -21,7 +21,9 @@ Pre-Reqs:
 - Install Kusto-Explorer on machine
 https://docs.microsoft.com/en-us/azure/data-explorer/kusto/tools/kusto-explorer
 
-### Review
+Review:
+---------
+
 Azure Data Explorer Built-in ML Capabilites:
 - Clustering [autocluster(), diffpatterns(), basket()]
 - Regression
