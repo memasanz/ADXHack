@@ -518,11 +518,17 @@ with (title='traffic, decomposition', ysplit=panels)
 ------------------------------------
 
 We can create a dashboard that can be shared with your team.
+Click on the `New dashboard` selection
+
 | ![](media/Dashboard01.PNG) |
 |---------------------------------------|
 
+We will need to add a datasource
+
 | ![](media/Dashboard02.PNG) |
 |---------------------------------------|
+
+Grab your cluster id and paste it in
 
 | ![](media/Dashboard03.PNG) |
 |---------------------------------------|
