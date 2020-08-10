@@ -299,8 +299,14 @@ TransactionEvents
 TransactionEvents
 | evaluate autocluster()
 ```
+If we only want to select a few columns and leverage autocluster we can project the columns
+```SQL
+TransactionEvents
+| project processed, direction, transactionType, partner
+| evaluate autocluster()
+```
 
-
+Using the sliding window we can get counts and distinct counts to get perspective on repeating transactions
 ```SQL
 //sliding window metric
 //https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/sliding-window-counts-plugin#examples
@@ -311,7 +317,7 @@ let window= 1d;
 TransactionEvents | evaluate activity_counts_metrics(partner, processed, min_t, max_t, window)
 ```
 
-
+Start to look at time chart, start with simply looking at counts
 ```SQL
 //Time Chart by transaction count
 let min_t = toscalar(TransactionEvents | summarize min(processed));  
@@ -333,6 +339,7 @@ TransactionEvents
  with (title = "Serivce exceptions over a week, 10 minute resolution")
  ```
  
+Look at information by direction
  
 ```SQL
 //based on count and binned into 1 hour - by direction
@@ -373,6 +380,8 @@ with (title='traffic, decomposition', ysplit=panels)
 ```SQL
  //series_fir - will be used later.
  //fir = finite impulse response, moving averages, calc change detection
+ //https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/series-firfunction
+ //calculate the moving average of 5 point and normaize
 let min_t = toscalar(TransactionEvents | summarize min(processed));
 let max_t = toscalar(TransactionEvents | summarize max(processed));
 TransactionEvents
@@ -411,10 +420,10 @@ TransactionEvents
 | where partner == "MACROPOINT"
 | render timechart 
 ```
-
+ 
 
 ```SQL
-//Need to recall what makes this interesting.
+//Look at 2 most significant decreasing trends for a server Cluster
 let min_t = toscalar(TransactionEvents | summarize min(processed));  
 let max_t = toscalar(TransactionEvents | summarize max(processed));  
 TransactionEvents
@@ -444,6 +453,19 @@ with (title='traffic, decomposition', ysplit=panels)
 ```
 
 ```SQL
+//fill gaps in data - with 0.
+let min_t = datetime(2020-06-19 00:00:00);
+let max_t = datetime(2020-06-19 02:00:00);
+let dt = 1m;
+TransactionEvents
+| make-series num=count() default=0 on processed from min_t to max_t step dt by direction
+| extend (baseline, seasonal, trend, residual) = series_decompose(num, -1, 'linefit')
+| render timechart 
+with (title='traffic, decomposition', ysplit=panels)
+```
+
+
+```SQL
 //will only run in kusto.Explorer
 //series_decompose_anomalies
 let min_t = toscalar(TransactionEvents | summarize min(processed));
@@ -454,6 +476,10 @@ TransactionEvents
 | where serverClusterMainNode == 'LIN2PR2SI3'
 | render anomalychart with ( title='Transactions, anomalies')
 ```
+
+<https://docs.microsoft.com/en-us/azure/data-explorer/anomaly-detection>
+
+The function series_decompose_anomalies() finds anomalous points on a set of time series. This function calls series_decompose() to build the decomposition model and then runs series_outliers() on the residual component. series_outliers() calculates anomaly scores for each point of the residual component using Tukey's fence test. Anomaly scores above 1.5 or below -1.5 indicate a mild anomaly rise or decline respectively. Anomaly scores above 3.0 or below -3.0 indicate a strong anomaly.
 
 ```SQL
 //series_decompose_anomalies
@@ -483,6 +509,7 @@ with (anomalycolumns=anomalies, title='Transactions, anomalies')
 
 
 ```SQL
+//fill gaps in data - with 0.
 let min_t = toscalar(TransactionEvents | summarize min(processed));
 let max_t = toscalar(TransactionEvents | summarize max(processed));
 TransactionEvents
@@ -492,28 +519,7 @@ TransactionEvents
 | render anomalychart with(anomalycolumns=anomalies, title='Web app. traffic of a month, anomalies') //use "| render anomalychart with anomalycolumns=anomalies" to render the anomalies as bold points on the series charts.
 ```
 
-```SQL
-//
-let min_t = datetime(2020-06-19 00:00:00);
-let max_t = datetime(2020-06-19 02:00:00);
-TransactionEvents
-| make-series num=count() default=0 on processed in range(min_t, max_t, 1h) by  direction, partner
-| where direction == 'I'   //  select a single time series for a cleaner visualization
-| extend (anomalies, score, baseline) = series_decompose_anomalies(num, 9.0, -1, 'linefit')
-```
 
-```SQL
-//fill gaps in data - with 0.
-let min_t = datetime(2020-06-19 00:00:00);
-let max_t = datetime(2020-06-19 02:00:00);
-let dt = 1m;
-TransactionEvents
-| make-series num=count() default=0 on processed from min_t to max_t step dt by direction
-
-| extend (baseline, seasonal, trend, residual) = series_decompose(num, -1, 'linefit')
-| render timechart 
-with (title='traffic, decomposition', ysplit=panels)
-```
 
 ### 15. Dashboard
 ------------------------------------
