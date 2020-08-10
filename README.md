@@ -95,6 +95,9 @@ Review + Create – This will take some time, so we can move on to creating the 
 
 ### 2. Environment Setup – Create Event Hub
 ------------------------------------
+
+In the Azure portal, click on create resource, and search for `Event Hub`
+
 2a. Click on the create button
 | ![media/f0d5dcca885b7f549c6fc222491b5cf3.png](media/f0d5dcca885b7f549c6fc222491b5cf3.png) |
 |------------------------------------------------------------------------------------------|
@@ -102,16 +105,19 @@ Review + Create – This will take some time, so we can move on to creating the 
 2b.  In basics select your sub, resource group, namespace, location, pricing tier
 
 | ![media/ba022629e8223a7be8d9584da42825dc.png](media/ba022629e8223a7be8d9584da42825dc.png) |
+|------------------------------------------------------------------------------------------|
 
 2c.  We need to create an event hub
 | ![media/ee7063cef8628fc1604c14d1de77b941.png](media/ee7063cef8628fc1604c14d1de77b941.png) |
+|------------------------------------------------------------------------------------------|
 
-2d.  Give Event ub a name
+2d.  Give the Event hub a name `chr-events` and select `Create`
 | ![media/1b1c2281dc25b75e828e7177dd4b852c.png](media/1b1c2281dc25b75e828e7177dd4b852c.png) |
+|------------------------------------------------------------------------------------------|
 
-“Create”
 
-Over on the left side tabl click on teh event hubs and we should see it.
+
+2e. Over on the left side tab click on the event hubs and we should see it.
 
 |![](media/274944d6f153042ac5ceffb05fee29fd.png) |
 |------------------------------------------------------------------------------------------|
@@ -119,7 +125,7 @@ Over on the left side tabl click on teh event hubs and we should see it.
 ### 3. Create ADX Database: chradxdb
 -----------------------------
 
-3a.  Clicking on our instance we should be able to hit the **+ Add database** or the **Create Database* button
+3a.  Clicking on our instance we should be able to hit the **+ Add database** or the **Create Database** button
 
 | ![media/8f603be88039a17a2dccba762a359cdc.png](media/8f603be88039a17a2dccba762a359cdc.png) |
 |------------------------------------------------------------------------------------------|
@@ -136,6 +142,8 @@ Azure Data Explorer cache provides a granular cache policy that customers can us
 ### 4.  Query to Create Table
 ------------------------------------
 
+The information coming in from the event hub will land into an ADX table.  We need to create that table and a mapping from the event hub json data to the table schema.  So first lets create a table `TransactionEvents`
+
 ```SQL
 .create table  TransactionEvents ( processed: datetime,  transactionType: string,  direction: string,  partner:string,  serverClusterMainNode:string,  errorResolutionType:int ,  purpose: string,  loadNum:string,  shipmentNum: string,  proNum: string )
 ```
@@ -146,6 +154,8 @@ Azure Data Explorer cache provides a granular cache policy that customers can us
 ### 5. Query Create Mapping
 ------------------------------------
 
+After the table is created, we can create the json mapping.
+
 ```SQL
 .create table TransactionEvents ingestion json mapping 'TransactionEventsMapping' '[{"column":"processed", "Properties": {"Path": "\$.processed"}},{"column":"transactionType", "Properties": {"Path":"\$.transactionType"}} ,{"column":"direction", "Properties": {"Path":"\$.direction"}},{"column":"partner", "Properties": {"Path":"\$.partner"}}, {"column":"serverClusterMainNode", "Properties": {"Path":"\$.serverClusterMainNode"}}, {"column":"errorResolutionType", "Properties": {"Path":"\$.errorResolutionType"}}, {"column":"purpose", "Properties": {"Path":"\$.purpose"}}, {"column":"loadNum", "Properties": {"Path":"\$.loadNum"}}, {"column":"shipmentNum", "Properties": {"Path":"\$.shipmentNum"}}, {"column":"proNum", "Properties": {"Path":"\$.proNum"}}]'
 ```
@@ -153,7 +163,7 @@ Azure Data Explorer cache provides a granular cache policy that customers can us
 ### 6. Set Permissions
 ------------------------------------
 
-We need to set permissions.  On the left tab we will see permssions, we can leverage Azure AD to get userss.
+We need to set permissions.  On the left tab we will see permssions, we can leverage Azure AD to get users to ensure everyone will have access to the resources.  You can do this by an AD group, or for each user.  Recommended for Hack to to provide users with the role `AllDatabasesAdmin`
 
 | ![media/4a032fb62c702a7e55f776bc531ab0eb.png](media/4a032fb62c702a7e55f776bc531ab0eb.png) |
 |------------------------------------------------------------------------------------------|
@@ -161,24 +171,24 @@ We need to set permissions.  On the left tab we will see permssions, we can leve
 
 ### 7. Create Connection to Event Hub
 ------------------------------------
-
+Through the Azure Portal we can connect the Event Hub to the ADX table.
 
 <https://docs.microsoft.com/en-us/azure/data-explorer/ingest-data-event-hub>
 
-Click on database and select ‘Data ingestion’
+7a. Click on database and select `Data ingestion`
 
 | ![media/a6c947511686bd988fe802c10ef2358e.png](media/a6c947511686bd988fe802c10ef2358e.png) |
 |------------------------------------------------------------------------------------------|
 
 
-### 8. Add a new connection
-------------------------------------
+7b.  Add a new connection
+Here we will select the Event Hub namespace `chr-events` and Event Hub  `chr-events` that we have already created, and the default Consumer Group `$Default`, along iwth the table data format `JSON` and the Mapping `TransactionEventsMapping`
 
 | ![media/c78e2009ecb9e308e7e50d9599119aa5.png](media/c78e2009ecb9e308e7e50d9599119aa5.png) |
 |------------------------------------------------------------------------------------------|
 | ![media/b7c80f3387f8ea589d31c299cb1b034e.png](media/b7c80f3387f8ea589d31c299cb1b034e.png) |
 
-### 9. Setup Console Application to act as data going into Event Hub
+### 8. Setup Console Application to act as data going into Event Hub
 ------------------------------------
 
 From cloned repo open the program.cs file and lets review & set a few
@@ -191,16 +201,24 @@ properties.
 | SourceFileLocation       |
 
 
+We will need to get the connection string from the `Shared access policies` of the event hub.
 
 | ![media/c5bcf30e4a36c194b743037e37d84412.png](media/c5bcf30e4a36c194b743037e37d84412.png) |
 |------------------------------------------------------------------------------------------|
+
+
+### 9. Confirm Event Hub Connection
+------------------------------------
 
 | ![media/a500918a098bf6832912915bbccd57aa.png](media/a500918a098bf6832912915bbccd57aa.png) |
 |------------------------------------------------------------------------------------------|
 
 
-### 10. Confirm Event Hub Connection
+### 10.  Update c# application with correct configuration to start sending data
 ------------------------------------
+Here is another repo with a basic sample app <https://github.com/Azure-Samples/event-hubs-dotnet-ingest>
+Lets review the console application and its configuration.
+
 
 ### 11.  Check Count in KQL Query
 ------------------------------------
@@ -209,6 +227,26 @@ properties.
 TransactionEvents
 | count
 ```
+
+### 12. Manually ingest batch data
+We can right click on the database and select to ingest new data.
+
+
+| ![media/IngestNewData.PNG](media/IngestNewData.PNG) |
+|------------------------------------------------------------------------------------------|
+
+We can then manually ingest the data & select `Edit schema` blue button
+
+| ![media/ManualIngest01.PNG](media/ManualIngest01.PNG) |
+|------------------------------------------------------------------------------------------|
+
+We can then create a new mapping
+
+| ![media/ManualIngest02.PNG](media/ManualIngest02.PNG) |
+|------------------------------------------------------------------------------------------|
+
+| ![media/ManualIngest03.PNG](media/ManualIngest03.PNG) |
+|------------------------------------------------------------------------------------------|
 
 ### 12. Edit Mapping Import
 ------------------------------------
