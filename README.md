@@ -56,8 +56,8 @@ In the Azure portal, click on create resource, and search for `Azure Data Explor
 
 <https://docs.microsoft.com/en-us/azure/data-explorer/create-cluster-database-portal>
 
-| ![](media/22af5207dd7d18364d2072e08f0c3e08.png) |
-|------------------------------------------------------------------------------------------|
+![](media/22af5207dd7d18364d2072e08f0c3e08.png)
+
 
 1b. Setting up basic configuration
 
