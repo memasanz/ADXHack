@@ -51,6 +51,8 @@ An ADX Cluster has 2 main components the Data Management and the Engine enabling
 
 1a.  Create ADX Instance
 
+In the Azure portal, click on create resource, and search for `Azure Data Explorer`
+
 <https://docs.microsoft.com/en-us/azure/data-explorer/create-cluster-database-portal>
 
 | ![media/22af5207dd7d18364d2072e08f0c3e08.png](media/22af5207dd7d18364d2072e08f0c3e08.png) |
@@ -58,15 +60,23 @@ An ADX Cluster has 2 main components the Data Management and the Engine enabling
 
 1b. Setting up basic configuration
 
+We can change the compute specifications later, but for now let's go with `Standard_D12_v2`
+
 | ![media/f2d35f27724316d58dccf6359af97268.png](media/f2d35f27724316d58dccf6359af97268.png) |
 |------------------------------------------------------------------------------------------|
 
-1b. Setting data explorer scale
+1c. Setting data explorer scale
+
+For scale, we can set its Min count to 2 and Max count to 8, ADX will autoscale based on its performance.  There is an extra credit section that has queries for monitoring the performance of the ADX Cluster.
 
 | ![/media/6ee9566eaa3e142e4784c94c1ae60d26.png](/media/6ee9566eaa3e142e4784c94c1ae60d26.png) |
 |--------------------------------------------------------------------------------------------|
 
-1c.  Set the streamining - lower latency on ingest
+1d.  Set the streamining - lower latency on ingest
+
+Use streaming ingestion to load data when you need low latency between ingestion and query. The streaming ingestion operation completes in under 10 seconds, and your data is immediately available for query after completion. This ingestion method is suitable for ingesting a high volume of data, such as thousands of records per second, spread over thousands of tables. Each table receives a relatively low volume of data, such as a few records per second.
+
+Use bulk ingestion instead of streaming ingestion when the amount of data ingested exceeds 4 GB per hour per table.
 
 <https://docs.microsoft.com/en-us/azure/data-explorer/ingest-data-streaming>
 
@@ -74,14 +84,14 @@ An ADX Cluster has 2 main components the Data Management and the Engine enabling
 |------------------------------------------------------------------------------------------|
 
 
-1d. Security Configuration
+1e. Security Configuration
+
+A managed identity from Azure Active Directory allows your cluster to easily access other AAD-protected resources such as Azure Key Vault. The identity is managed by the Azure platform and doesn't require you to provision or rotate any secrets. 
 
 | ![media/50da04743cd51d1c2094237a9f40fb71.png](media/50da04743cd51d1c2094237a9f40fb71.png) |
 |------------------------------------------------------------------------------------------|
 
-
-
-Review + Create – This will take some time.
+Review + Create – This will take some time, so we can move on to creating the event hub.
 
 ### 2. Environment Setup – Create Event Hub
 ------------------------------------
@@ -124,6 +134,7 @@ Azure Data Explorer cache provides a granular cache policy that customers can us
 |------------------------------------------------------------------------------------------|
 
 ### 4.  Query to Create Table
+------------------------------------
 
 ```SQL
 .create table  TransactionEvents ( processed: datetime,  transactionType: string,  direction: string,  partner:string,  serverClusterMainNode:string,  errorResolutionType:int ,  purpose: string,  loadNum:string,  shipmentNum: string,  proNum: string )
@@ -133,12 +144,14 @@ Azure Data Explorer cache provides a granular cache policy that customers can us
 |------------------------------------------------------------------------------------------|
 
 ### 5. Query Create Mapping
+------------------------------------
 
 ```SQL
 .create table TransactionEvents ingestion json mapping 'TransactionEventsMapping' '[{"column":"processed", "Properties": {"Path": "\$.processed"}},{"column":"transactionType", "Properties": {"Path":"\$.transactionType"}} ,{"column":"direction", "Properties": {"Path":"\$.direction"}},{"column":"partner", "Properties": {"Path":"\$.partner"}}, {"column":"serverClusterMainNode", "Properties": {"Path":"\$.serverClusterMainNode"}}, {"column":"errorResolutionType", "Properties": {"Path":"\$.errorResolutionType"}}, {"column":"purpose", "Properties": {"Path":"\$.purpose"}}, {"column":"loadNum", "Properties": {"Path":"\$.loadNum"}}, {"column":"shipmentNum", "Properties": {"Path":"\$.shipmentNum"}}, {"column":"proNum", "Properties": {"Path":"\$.proNum"}}]'
 ```
 
 ### 6. Set Permissions
+------------------------------------
 
 We need to set permissions.  On the left tab we will see permssions, we can leverage Azure AD to get userss.
 
@@ -147,6 +160,8 @@ We need to set permissions.  On the left tab we will see permssions, we can leve
 
 
 ### 7. Create Connection to Event Hub
+------------------------------------
+
 
 <https://docs.microsoft.com/en-us/azure/data-explorer/ingest-data-event-hub>
 
@@ -157,13 +172,14 @@ Click on database and select ‘Data ingestion’
 
 
 ### 8. Add a new connection
+------------------------------------
 
 | ![media/c78e2009ecb9e308e7e50d9599119aa5.png](media/c78e2009ecb9e308e7e50d9599119aa5.png) |
 |------------------------------------------------------------------------------------------|
 | ![media/b7c80f3387f8ea589d31c299cb1b034e.png](media/b7c80f3387f8ea589d31c299cb1b034e.png) |
 
 ### 9. Setup Console Application to act as data going into Event Hub
--------------------------------------------------------------
+------------------------------------
 
 From cloned repo open the program.cs file and lets review & set a few
 properties.
@@ -184,8 +200,10 @@ properties.
 
 
 ### 10. Confirm Event Hub Connection
+------------------------------------
 
 ### 11.  Check Count in KQL Query
+------------------------------------
 
 ```SQL
 TransactionEvents
@@ -193,12 +211,14 @@ TransactionEvents
 ```
 
 ### 12. Edit Mapping Import
-
+------------------------------------
 
 |![](media/139985c179036fa81ced07378ae20d40.png) |
 |------------------------------------------------------------------------------------------|
 
 ### 13.  Install Kusto.Explorer
+------------------------------------
+
 <https://docs.microsoft.com/en-us/azure/data-explorer/kusto/tools/kusto-explorer>
 
 Kusto Explorer will actually pick up anomolies without us doing anything
@@ -217,6 +237,7 @@ TransactionEvents
 **But let's take a step back and start going through some queries and syntax**
 
 ### 14.  In Kusto.Explorer or Edge - lets start looking at some data
+------------------------------------
 
 ```SQL
 TransactionEvents
@@ -456,6 +477,8 @@ with (title='traffic, decomposition', ysplit=panels)
 ```
 
 ### 15. Dashboard
+------------------------------------
+
 We can create a dashboard that can be shared with your team.
 | ![](media/Dashboard01.PNG) |
 |---------------------------------------|
@@ -493,6 +516,7 @@ We can create a dashboard that can be shared with your team.
 
 
 ### 16. Power BI Dashboard
+------------------------------------
 
 <https://docs.microsoft.com/en-us/azure/data-explorer/power-bi-connector>
 
@@ -536,6 +560,7 @@ The steps below walk us through setting up the connection using a query establis
 
 
 ### 17. Things of interesting
+------------------------------------
 
 - Why did the traffic go down to 0 for these servers?  
 
@@ -555,6 +580,7 @@ TransactionEvents
 |![](media/TimeSeriesAnalysis01.PNG) |
 
 ### 18. Extra Credit - Inline Python
+------------------------------------
 
 **Required to enable python plugin**
 <https://docs.microsoft.com/en-us/azure/data-explorer/language-extensions>
@@ -604,6 +630,7 @@ TransactionEvents
 
 
 ### 19. Extra Credit - Cluster Diagnostics
+------------------------------------
 
 |![](media/ClusterDiagnostics01.png) |
 ```SQL
