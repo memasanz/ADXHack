@@ -38,7 +38,10 @@ Integration:
 - Spark Connector (preview)
 - Data Export
 
-During this Hack, we are going to be 
+
+Below is a review of the possible architectures
+| ![](media/Overview.PNG) |
+|---------------------------------------|
 
 ### 1. Environment Setup – Azure Data Explorer
 --------------------------------------------
@@ -449,7 +452,7 @@ TransactionEvents
 with (title='traffic, decomposition', ysplit=panels)
 ```
 
-### Dashboard
+### 15. Dashboard
 We can create a dashboard that can be shared with your team.
 | ![](media/Dashboard01.PNG) |
 |---------------------------------------|
@@ -486,7 +489,7 @@ We can create a dashboard that can be shared with your team.
 
 
 
-### Power BI Dashboard
+### 16. Power BI Dashboard
 
 <https://docs.microsoft.com/en-us/azure/data-explorer/power-bi-connector>
 
@@ -529,7 +532,7 @@ The steps below walk us through setting up the connection using a query establis
 
 
 
-### Things of interesting
+### 17. Things of interesting
 
 - Why did the traffic go down to 0 for these servers?  
 
@@ -548,17 +551,19 @@ TransactionEvents
 ```
 |![](media/TimeSeriesAnalysis01.PNG) |
 
-### Extra Credit - Inline Python
+### 18. Extra Credit - Inline Python
 
 **Required to enable python plugin**
 <https://docs.microsoft.com/en-us/azure/data-explorer/language-extensions>
 
 |![](media/pythonplugin01.PNG) |
+|---------------------------------------|
 
 Below we will do a polynomial fit on the data leveraging numpy polyfit
 
 
 |![](media/pythonplugin02.PNG) |
+|---------------------------------------|
 
 ```SQL
 let series_fit_poly = (tbl:(*), col: string, degree: int)
@@ -595,7 +600,7 @@ TransactionEvents
 
 
 
-### Extra Credit - Cluster Diagnostics
+### 19. Extra Credit - Cluster Diagnostics
 
 |![](media/ClusterDiagnostics01.png) |
 ```SQL
