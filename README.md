@@ -39,7 +39,8 @@ Integration:
 - Data Export
 
 
-Below is a review of the possible architectures
+Azure Data Explorer integrates with Azure leveraging SDKs, managed pipelines, connections and plugins along with tools like Azure Data Factory.
+An ADX Cluster has 2 main components the Data Management and the Engine enabling the queries.
 | ![](media/Overview.PNG) |
 |---------------------------------------|
 
