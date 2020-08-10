@@ -56,22 +56,22 @@ In the Azure portal, click on create resource, and search for `Azure Data Explor
 
 <https://docs.microsoft.com/en-us/azure/data-explorer/create-cluster-database-portal>
 
-![](media/22af5207dd7d18364d2072e08f0c3e08.png)
-
+| ![](media/22af5207dd7d18364d2072e08f0c3e08.png) |
+|------------------------------------------------------------------------------------------|
 
 1b. Setting up basic configuration
 
 We can change the compute specifications later, but for now let's go with `Standard_D12_v2`
 
-![](media/f2d35f27724316d58dccf6359af97268.png)
-
+| ![](media/f2d35f27724316d58dccf6359af97268.png) |
+|------------------------------------------------------------------------------------------|
 
 1c. Setting data explorer scale
 
 For scale, we can set its Min count to 2 and Max count to 8, ADX will autoscale based on its performance.  There is an extra credit section that has queries for monitoring the performance of the ADX Cluster.
 
-![](media/6ee9566eaa3e142e4784c94c1ae60d26.png)
-
+| ![](media/6ee9566eaa3e142e4784c94c1ae60d26.png) |
+|--------------------------------------------------------------------------------------------|
 
 1d.  Set the streamining - lower latency on ingest
 
@@ -81,15 +81,16 @@ Use bulk ingestion instead of streaming ingestion when the amount of data ingest
 
 <https://docs.microsoft.com/en-us/azure/data-explorer/ingest-data-streaming>
 
-![](media/51e9128b17c3d8a48c8794cda845b438.png)
-
+| ![](media/51e9128b17c3d8a48c8794cda845b438.png) |
+|------------------------------------------------------------------------------------------|
 
 
 1e. Security Configuration
 
 A managed identity from Azure Active Directory allows your cluster to easily access other AAD-protected resources such as Azure Key Vault. The identity is managed by the Azure platform and doesn't require you to provision or rotate any secrets. 
 
-![](media/50da04743cd51d1c2094237a9f40fb71.png) 
+| ![](media/50da04743cd51d1c2094237a9f40fb71.png) |
+|------------------------------------------------------------------------------------------|
 
 Review + Create – This will take some time, so we can move on to creating the event hub.
 
@@ -99,36 +100,36 @@ Review + Create – This will take some time, so we can move on to creating the 
 In the Azure portal, click on create resource, and search for `Event Hub`
 
 2a. Click on the create button
-![](media/f0d5dcca885b7f549c6fc222491b5cf3.png)
-
+| ![](media/f0d5dcca885b7f549c6fc222491b5cf3.png) |
+|------------------------------------------------------------------------------------------|
 
 2b.  In basics select your sub, resource group, namespace, location, pricing tier
 
-![](media/ba022629e8223a7be8d9584da42825dc.png)
-
+| ![](media/ba022629e8223a7be8d9584da42825dc.png) |
+|------------------------------------------------------------------------------------------|
 
 2c.  We need to create an event hub
-![](media/ee7063cef8628fc1604c14d1de77b941.png)
-
+| ![](media/ee7063cef8628fc1604c14d1de77b941.png) |
+|------------------------------------------------------------------------------------------|
 
 2d.  Give the Event hub a name `chr-events` and select `Create`
-![](media/1b1c2281dc25b75e828e7177dd4b852c.png)
-
+| ![](media/1b1c2281dc25b75e828e7177dd4b852c.png) |
+|------------------------------------------------------------------------------------------|
 
 
 
 2e. Over on the left side tab click on the event hubs and we should see it.
 
-![](media/274944d6f153042ac5ceffb05fee29fd.png)
-
+|![](media/274944d6f153042ac5ceffb05fee29fd.png) |
+|------------------------------------------------------------------------------------------|
 
 ### 3. Create ADX Database: chradxdb
 -----------------------------
 
 3a.  Clicking on our instance we should be able to hit the **+ Add database** or the **Create Database** button
 
-![](media/8f603be88039a17a2dccba762a359cdc.png)
-
+| ![](media/8f603be88039a17a2dccba762a359cdc.png) |
+|------------------------------------------------------------------------------------------|
 
 3b.  Provide: database name and retention period - this is for blob storage and cache
 
@@ -136,7 +137,8 @@ In the Azure portal, click on create resource, and search for `Event Hub`
 
 Azure Data Explorer cache provides a granular cache policy that customers can use to differentiate between: hot data cache and cold data cache. Azure Data Explorer cache attempts to keep all data that falls into the hot data cache category, in local SSD (or RAM), up to the defined size of the hot data cache. The remaining local SSD space will be used to hold data that isn't categorized as hot. One useful implication of this design is that queries that load lots of cold data from reliable storage won't evict data from the hot data cache. As a result, there won't be a major impact on queries involving the data in the hot data cache.
 
-![](media/c13e9416344aeaf3408c4b43a45e4f18.png)
+| ![](media/c13e9416344aeaf3408c4b43a45e4f18.png) |
+|------------------------------------------------------------------------------------------|
 
 ### 4.  Query to Create Table
 ------------------------------------
@@ -147,8 +149,8 @@ The information coming in from the event hub will land into an ADX table.  We ne
 .create table  TransactionEvents ( processed: datetime,  transactionType: string,  direction: string,  partner:string,  serverClusterMainNode:string,  errorResolutionType:int ,  purpose: string,  loadNum:string,  shipmentNum: string,  proNum: string )
 ```
 
-![](media/c995d59386564f9be05481a8b7436638.png)
-
+| ![media/c995d59386564f9be05481a8b7436638.png](media/c995d59386564f9be05481a8b7436638.png)|
+|------------------------------------------------------------------------------------------|
 
 ### 5. Query Create Mapping
 ------------------------------------
@@ -164,7 +166,8 @@ After the table is created, we can create the json mapping.
 
 We need to set permissions.  On the left tab we will see permssions, we can leverage Azure AD to get users to ensure everyone will have access to the resources.  You can do this by an AD group, or for each user.  Recommended for Hack to to provide users with the role `AllDatabasesAdmin`
 
-![](media/4a032fb62c702a7e55f776bc531ab0eb.png) 
+| ![media/4a032fb62c702a7e55f776bc531ab0eb.png](media/4a032fb62c702a7e55f776bc531ab0eb.png) |
+|------------------------------------------------------------------------------------------|
 
 
 ### 7. Create Connection to Event Hub
@@ -175,16 +178,16 @@ Through the Azure Portal we can connect the Event Hub to the ADX table.
 
 7a. Click on database and select `Data ingestion`
 
-![](media/a6c947511686bd988fe802c10ef2358e.png) 
+| ![media/a6c947511686bd988fe802c10ef2358e.png](media/a6c947511686bd988fe802c10ef2358e.png) |
+|------------------------------------------------------------------------------------------|
 
 
 7b.  Add a new connection
 Here we will select the Event Hub namespace `chr-events` and Event Hub  `chr-events` that we have already created, and the default Consumer Group `$Default`, along iwth the table data format `JSON` and the Mapping `TransactionEventsMapping`
 
-![](media/c78e2009ecb9e308e7e50d9599119aa5.png)
-
-
-![](media/b7c80f3387f8ea589d31c299cb1b034e.png)
+| ![media/c78e2009ecb9e308e7e50d9599119aa5.png](media/c78e2009ecb9e308e7e50d9599119aa5.png) |
+|------------------------------------------------------------------------------------------|
+| ![media/b7c80f3387f8ea589d31c299cb1b034e.png](media/b7c80f3387f8ea589d31c299cb1b034e.png) |
 
 ### 8. Setup Console Application to act as data going into Event Hub
 ------------------------------------
@@ -201,15 +204,15 @@ properties.
 
 We will need to get the connection string from the `Shared access policies` of the event hub.
 
-| ![](media/c5bcf30e4a36c194b743037e37d84412.png) 
-
+| ![media/c5bcf30e4a36c194b743037e37d84412.png](media/c5bcf30e4a36c194b743037e37d84412.png) |
+|------------------------------------------------------------------------------------------|
 
 
 ### 9. Confirm Event Hub Connection
 ------------------------------------
 
-![](media/a500918a098bf6832912915bbccd57aa.png) 
-
+| ![media/a500918a098bf6832912915bbccd57aa.png](media/a500918a098bf6832912915bbccd57aa.png) |
+|------------------------------------------------------------------------------------------|
 
 
 ### 10.  Update c# application with correct configuration to start sending data
@@ -230,26 +233,27 @@ TransactionEvents
 We can right click on the database and select to ingest new data.
 
 
-![](media/IngestNewData.png) 
-
+| ![media/IngestNewData.png](media/IngestNewData.png) |
+|------------------------------------------------------------------------------------------|
 
 We can then manually ingest the data & select `Edit schema` blue button
 
-![](media/ManualIngest01.PNG) 
+| ![media/ManualIngest01.PNG](media/ManualIngest01.PNG) |
+|------------------------------------------------------------------------------------------|
 
 We can then create a new mapping
 
-| ![](media/ManualIngest02.PNG) |
+| ![media/ManualIngest02.PNG](media/ManualIngest02.PNG) |
+|------------------------------------------------------------------------------------------|
 
-
-| ![](media/ManualIngest03.PNG) |
-
+| ![media/ManualIngest03.PNG](media/ManualIngest03.PNG) |
+|------------------------------------------------------------------------------------------|
 
 ### 12. Edit Mapping Import
 ------------------------------------
 
-![](media/139985c179036fa81ced07378ae20d40.png) 
-
+|![](media/139985c179036fa81ced07378ae20d40.png) |
+|------------------------------------------------------------------------------------------|
 
 ### 13.  Install Kusto.Explorer
 ------------------------------------
@@ -267,7 +271,7 @@ TransactionEvents
 | render anomalychart with ( title='Transactions anomalies') 
 ```
 
-![](media/KustoExplorer01.PNG)
+|![](media/KustoExplorer01.PNG)|
 
 **But let's take a step back and start going through some queries and syntax**
 
@@ -523,51 +527,51 @@ TransactionEvents
 We can create a dashboard that can be shared with your team.
 Click on the `New dashboard` selection
 
- ![](media/Dashboard01.PNG) 
-
+| ![](media/Dashboard01.PNG) |
+|---------------------------------------|
 
 We will need to add a datasource
 
-![](media/Dashboard02.PNG) 
-
+| ![](media/Dashboard02.PNG) |
+|---------------------------------------|
 
 Click on the Data sources
 
-![](media/Dashboard03.PNG) 
-
+| ![](media/Dashboard03.PNG) |
+|---------------------------------------|
 
 Click the `+ Data source`
 
-![](media/Dashboard05.PNG) 
-
+| ![](media/Dashboard05.PNG) |
+|---------------------------------------|
 
 Grab your cluster id and paste it in
 Be sure to put in the database and give it a name
 
-![](media/Dashboard06.PNG) 
-
+| ![](media/Dashboard06.PNG) |
+|---------------------------------------|
 
 Now we can put in some KQL
-![](media/Dashboard07.PNG) 
-
+| ![](media/Dashboard07.PNG) |
+|---------------------------------------|
 
 We can hit `Apply changes`
-![](media/Dashboard08.PNG)
-
+| ![](media/Dashboard08.PNG) |
+|---------------------------------------|
 
 
 
 We can also apply Auto refresh to dashboard
 
-![](media/Dashboard09.PNG) 
-
+| ![](media/Dashboard09.PNG) |
+|---------------------------------------|
 
 Also be sure to set `Dashboard permissions`
-![](media/Dashboard10.PNG)
+| ![](media/Dashboard10.PNG) |
+|---------------------------------------|
 
-
-![](media/Dashboard11.PNG) 
-
+| ![](media/Dashboard11.PNG) |
+|---------------------------------------|
 
 
 
@@ -579,12 +583,12 @@ Also be sure to set `Dashboard permissions`
 The link above shows how to create a connection - be sure to use a direct connection (Azure Data Explorer runs query)
 
 | ![](media/PowerBI.PNG) |
-
+|---------------------------------------|
 
 We can setup a connection to power bi with a specific query
 
-| ![](media/PowerBI00.PNG) 
-
+| ![](media/PowerBI00.PNG) |
+|---------------------------------------|
 
 ```SQL
 TransactionEvents
@@ -596,22 +600,22 @@ The steps below walk us through setting up the connection using a query establis
 
 
 | ![](media/PowerBI01.PNG) |
-
+|---------------------------------------|
 
 | ![](media/PowerBI02.PNG) |
-
+|---------------------------------------|
 
 | ![](media/PowerBI03.PNG) |
-
+|---------------------------------------|
 
 | ![](media/PowerBI04.PNG) |
-
+|---------------------------------------|
 
 | ![](media/PowerBI05.PNG) |
-
+|---------------------------------------|
 
 | ![](media/PowerBI06.PNG) |
-
+|---------------------------------------|
 
 
 
@@ -642,13 +646,13 @@ TransactionEvents
 <https://docs.microsoft.com/en-us/azure/data-explorer/language-extensions>
 
 |![](media/pythonplugin01.PNG) |
-
+|---------------------------------------|
 
 Below we will do a polynomial fit on the data leveraging numpy polyfit
 
 
 |![](media/pythonplugin02.PNG) |
-
+|---------------------------------------|
 
 ```SQL
 let series_fit_poly = (tbl:(*), col: string, degree: int)
