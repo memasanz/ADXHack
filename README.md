@@ -21,6 +21,25 @@ Pre-Reqs:
 - Install Kusto-Explorer on machine
 https://docs.microsoft.com/en-us/azure/data-explorer/kusto/tools/kusto-explorer
 
+### Review
+Azure Data Explorer Built-in ML Capabilites:
+- Clustering [autocluster(), diffpatterns(), basket()]
+- Regression
+- Anomaly Detection
+- Forecast
+
+Extensibility:
+- Inline Python plugin (preview)
+- Python SDK
+- Java SDK
+
+Integration:
+- KQL Magic for Jupyter
+- Spark Connector (preview)
+- Data Export
+
+During this Hack, we are going to be 
+
 ### 1. Environment Setup – Azure Data Explorer
 --------------------------------------------
 
@@ -210,6 +229,13 @@ TransactionEvents
 
 
 ```SQL
+\\Look at common patterns in the data
+TransactionEvents
+| evaluate autocluster()
+```
+
+
+```SQL
 //sliding window metric
 //https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/sliding-window-counts-plugin#examples
 //count for the day, distinct partners for the day, new partners for the day
@@ -365,6 +391,7 @@ TransactionEvents
 
 ```SQL
 //series_decompose_anomalies
+//threshold = 1.5, seasonality auto detect = -1, 
 let min_t = toscalar(TransactionEvents | summarize min(processed));
 let max_t = toscalar(TransactionEvents | summarize max(processed));
 let dt = 2h;
@@ -520,6 +547,53 @@ TransactionEvents
 | render timechart with(title="Service Traffic for 2 instances")
 ```
 |![](media/TimeSeriesAnalysis01.PNG) |
+
+### Extra Credit - Inline Python
+
+**Required to enable python plugin**
+<https://docs.microsoft.com/en-us/azure/data-explorer/language-extensions>
+
+|![](media/pythonplugin01.PNG) |
+
+Below we will do a polynomial fit on the data leveraging numpy polyfit
+
+
+|![](media/pythonplugin02.PNG) |
+
+```SQL
+let series_fit_poly = (tbl:(*), col: string, degree: int)
+{
+let kwargs = pack('col', col, 'degree', degree);
+tbl
+| evaluate python(typeof(*, fnum: dynamic),
+	'\n'
+	'col = kargs["col"]\n'
+	'degree = kargs["degree"]\n'
+	'\n'
+	'def fit(s, deg):\n'
+	'    x = np.arange(len(s))\n'
+	'    coeff = np.polyfit(x, s, deg)\n'
+	'    p = np.poly1d(coeff)\n'
+	'    z = p(x)\n'
+	'    return z\n'
+	'\n'
+	'result = df\n'
+	'result["fnum"] = df[col].apply(fit, deg=degree)\n'
+	'\n'
+, kwargs)
+};
+
+let max_t = datetime(2020-06-21);
+TransactionEvents
+| make-series num=count() on processed from max_t-1d to max_t step 5m by serverClusterMainNode
+|extend series_fit_line(num)
+|invoke series_fit_poly('num', 5)
+|render timechart 
+
+```
+
+
+
 
 ### Extra Credit - Cluster Diagnostics
 
