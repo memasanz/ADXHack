@@ -43,6 +43,7 @@ Integration:
 
 Azure Data Explorer integrates with Azure leveraging SDKs, managed pipelines, connections and plugins along with tools like Azure Data Factory.
 An ADX Cluster has 2 main components the Data Management and the Engine enabling the queries.
+
 | ![](media/Overview.PNG) |
 |---------------------------------------|
 
@@ -55,21 +56,21 @@ In the Azure portal, click on create resource, and search for `Azure Data Explor
 
 <https://docs.microsoft.com/en-us/azure/data-explorer/create-cluster-database-portal>
 
-| ![media/22af5207dd7d18364d2072e08f0c3e08.png](media/22af5207dd7d18364d2072e08f0c3e08.png) |
+| ![](media/22af5207dd7d18364d2072e08f0c3e08.png) |
 |------------------------------------------------------------------------------------------|
 
 1b. Setting up basic configuration
 
 We can change the compute specifications later, but for now let's go with `Standard_D12_v2`
 
-| ![media/f2d35f27724316d58dccf6359af97268.png](media/f2d35f27724316d58dccf6359af97268.png) |
+| ![](media/f2d35f27724316d58dccf6359af97268.png) |
 |------------------------------------------------------------------------------------------|
 
 1c. Setting data explorer scale
 
 For scale, we can set its Min count to 2 and Max count to 8, ADX will autoscale based on its performance.  There is an extra credit section that has queries for monitoring the performance of the ADX Cluster.
 
-| ![/media/6ee9566eaa3e142e4784c94c1ae60d26.png](/media/6ee9566eaa3e142e4784c94c1ae60d26.png) |
+| ![](media/6ee9566eaa3e142e4784c94c1ae60d26.png) |
 |--------------------------------------------------------------------------------------------|
 
 1d.  Set the streamining - lower latency on ingest
@@ -80,7 +81,7 @@ Use bulk ingestion instead of streaming ingestion when the amount of data ingest
 
 <https://docs.microsoft.com/en-us/azure/data-explorer/ingest-data-streaming>
 
-| ![media/51e9128b17c3d8a48c8794cda845b438.png](media/51e9128b17c3d8a48c8794cda845b438.png) |
+| ![](media/51e9128b17c3d8a48c8794cda845b438.png) |
 |------------------------------------------------------------------------------------------|
 
 
@@ -88,7 +89,7 @@ Use bulk ingestion instead of streaming ingestion when the amount of data ingest
 
 A managed identity from Azure Active Directory allows your cluster to easily access other AAD-protected resources such as Azure Key Vault. The identity is managed by the Azure platform and doesn't require you to provision or rotate any secrets. 
 
-| ![media/50da04743cd51d1c2094237a9f40fb71.png](media/50da04743cd51d1c2094237a9f40fb71.png) |
+| ![](media/50da04743cd51d1c2094237a9f40fb71.png) |
 |------------------------------------------------------------------------------------------|
 
 Review + Create – This will take some time, so we can move on to creating the event hub.
@@ -99,20 +100,20 @@ Review + Create – This will take some time, so we can move on to creating the 
 In the Azure portal, click on create resource, and search for `Event Hub`
 
 2a. Click on the create button
-| ![media/f0d5dcca885b7f549c6fc222491b5cf3.png](media/f0d5dcca885b7f549c6fc222491b5cf3.png) |
+| ![](media/f0d5dcca885b7f549c6fc222491b5cf3.png) |
 |------------------------------------------------------------------------------------------|
 
 2b.  In basics select your sub, resource group, namespace, location, pricing tier
 
-| ![media/ba022629e8223a7be8d9584da42825dc.png](media/ba022629e8223a7be8d9584da42825dc.png) |
+| ![](media/ba022629e8223a7be8d9584da42825dc.png) |
 |------------------------------------------------------------------------------------------|
 
 2c.  We need to create an event hub
-| ![media/ee7063cef8628fc1604c14d1de77b941.png](media/ee7063cef8628fc1604c14d1de77b941.png) |
+| ![](media/ee7063cef8628fc1604c14d1de77b941.png) |
 |------------------------------------------------------------------------------------------|
 
 2d.  Give the Event hub a name `chr-events` and select `Create`
-| ![media/1b1c2281dc25b75e828e7177dd4b852c.png](media/1b1c2281dc25b75e828e7177dd4b852c.png) |
+| ![](media/1b1c2281dc25b75e828e7177dd4b852c.png) |
 |------------------------------------------------------------------------------------------|
 
 
@@ -127,7 +128,7 @@ In the Azure portal, click on create resource, and search for `Event Hub`
 
 3a.  Clicking on our instance we should be able to hit the **+ Add database** or the **Create Database** button
 
-| ![media/8f603be88039a17a2dccba762a359cdc.png](media/8f603be88039a17a2dccba762a359cdc.png) |
+| ![](media/8f603be88039a17a2dccba762a359cdc.png) |
 |------------------------------------------------------------------------------------------|
 
 3b.  Provide: database name and retention period - this is for blob storage and cache
@@ -136,7 +137,7 @@ In the Azure portal, click on create resource, and search for `Event Hub`
 
 Azure Data Explorer cache provides a granular cache policy that customers can use to differentiate between: hot data cache and cold data cache. Azure Data Explorer cache attempts to keep all data that falls into the hot data cache category, in local SSD (or RAM), up to the defined size of the hot data cache. The remaining local SSD space will be used to hold data that isn't categorized as hot. One useful implication of this design is that queries that load lots of cold data from reliable storage won't evict data from the hot data cache. As a result, there won't be a major impact on queries involving the data in the hot data cache.
 
-| ![media/c13e9416344aeaf3408c4b43a45e4f18.png](media/c13e9416344aeaf3408c4b43a45e4f18.png) |
+| ![](media/c13e9416344aeaf3408c4b43a45e4f18.png) |
 |------------------------------------------------------------------------------------------|
 
 ### 4.  Query to Create Table
