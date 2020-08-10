@@ -553,11 +553,13 @@ We can hit `Apply changes`
 |---------------------------------------|
 
 
-Also be sure to set `Dashboard permissions`
+
+We can also apply Auto refresh to dashboard
 
 | ![](media/Dashboard09.PNG) |
 |---------------------------------------|
 
+Also be sure to set `Dashboard permissions`
 | ![](media/Dashboard10.PNG) |
 |---------------------------------------|
 
