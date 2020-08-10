@@ -528,18 +528,21 @@ We will need to add a datasource
 | ![](media/Dashboard02.PNG) |
 |---------------------------------------|
 
-Grab your cluster id and paste it in
+Click on the Data sources
 
 | ![](media/Dashboard03.PNG) |
 |---------------------------------------|
 
+Click the `+ Data source`
 
 | ![](media/Dashboard05.PNG) |
 |---------------------------------------|
 
+Grab your cluster id and paste it in
 | ![](media/Dashboard06.PNG) |
 |---------------------------------------|
 
+Be sure to put in the database and give it a name
 | ![](media/Dashboard07.PNG) |
 |---------------------------------------|
 
