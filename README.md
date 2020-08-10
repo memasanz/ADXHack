@@ -539,15 +539,21 @@ Click the `+ Data source`
 |---------------------------------------|
 
 Grab your cluster id and paste it in
+Be sure to put in the database and give it a name
+
 | ![](media/Dashboard06.PNG) |
 |---------------------------------------|
 
-Be sure to put in the database and give it a name
+Now we can put in some KQL
 | ![](media/Dashboard07.PNG) |
 |---------------------------------------|
 
+We can hit `Apply changes`
 | ![](media/Dashboard08.PNG) |
 |---------------------------------------|
+
+
+Also be sure to set `Dashboard permissions`
 
 | ![](media/Dashboard09.PNG) |
 |---------------------------------------|
