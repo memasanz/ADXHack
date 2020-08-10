@@ -533,8 +533,6 @@ Grab your cluster id and paste it in
 | ![](media/Dashboard03.PNG) |
 |---------------------------------------|
 
-| ![](media/Dashboard04.PNG) |
-|---------------------------------------|
 
 | ![](media/Dashboard05.PNG) |
 |---------------------------------------|
