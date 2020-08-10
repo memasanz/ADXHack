@@ -232,7 +232,7 @@ TransactionEvents
 We can right click on the database and select to ingest new data.
 
 
-| ![media/IngestNewData.PNG](media/IngestNewData.PNG) |
+| ![media/IngestNewData.png](media/IngestNewData.png) |
 |------------------------------------------------------------------------------------------|
 
 We can then manually ingest the data & select `Edit schema` blue button
