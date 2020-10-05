@@ -151,6 +151,13 @@ The information coming in from the event hub will land into an ADX table.  We ne
 
 | ![media/c995d59386564f9be05481a8b7436638.png](media/c995d59386564f9be05481a8b7436638.png)|
 |------------------------------------------------------------------------------------------|
+### Set streaming Policy on table.
+
+https://docs.microsoft.com/en-us/azure/data-explorer/kusto/management/streamingingestion-policy
+
+```SQL
+.alter table TransactionEvents policy streamingingestion enable
+```
 
 ### 5. Query Create Mapping
 ------------------------------------
